@@ -4,9 +4,6 @@ from collections import Counter
 def count_words_tagging():
     map_1 = {}
     map_2 = {}
-    tryee = ""
-    tryee2 = ""
-    tryee3 = ""
     with open("pos/pos/data/ass1-tagger-train", 'r') as f:
         line = f.readline()
         while line != '':
