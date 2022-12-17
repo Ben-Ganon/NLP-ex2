@@ -69,7 +69,7 @@ def predict_word_tag(map_1, map_2, word_to_check, word_map_2):
     if origin_word2 is not None:
         tag2 = map_2[word_map_2][0][0]
 
-    if tag1 == tag2:
+    if tag1 == tag2 and tag1 is not None:
         return tag1
 
     if tag1 is not None:
@@ -86,6 +86,7 @@ def predict_word_tag(map_1, map_2, word_to_check, word_map_2):
 
 def check_accuracy(map_1, map_2):
     count_false, count_true = 0, 0
+    to_write = ""
     with open("pos/pos/data/ass1-tagger-dev", 'r') as f:
         line = f.readline()
         while line != '':
@@ -105,8 +106,11 @@ def check_accuracy(map_1, map_2):
                 else:
                     count_false += 1
                 word_map_2 = word_to_check
-
+                to_write += str(word_to_check) + '/' + str(prediction) + " "
             line = f.readline()
+
+    with open("POS_preds_1.txt", 'w') as f:
+        f.write(to_write)
 
     # calculate and return the accuracy
     return ((count_true) / (count_true + count_false))
@@ -114,8 +118,6 @@ def check_accuracy(map_1, map_2):
 
 if __name__ == "__main__":
     map_1, map_2 = count_words_tagging()
-    # print(map_1)
-    # print(map_2)
 
     accuracy = check_accuracy(map_1, map_2)
     print("The accuracy is " + str(accuracy * 100) + "%")
