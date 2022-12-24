@@ -104,6 +104,20 @@ def count_words_tagging():
 
     return map_1
 
+def ex2_final(tag_to_vectors, model, map1):
+    with open("pos/pos/data/ass1-tagger-test-input", 'r') as f:
+        with open("POS_preds_2.txt", 'w') as result:
+            for line in f:
+                for word in line.split():
+                    w2v_pred, check = predict_by_common_occurrence(map1, word)
+                    if check:
+                        w2v_pred = return_tag_by_static_vector(word, model, tag_to_vectors)
+                    result.write(f'{word}/{w2v_pred} ')
+                result.write('\n')
+
+
+
+
 def return_the_accuracy(tag_to_vectors, model, map1):
     with open("POS_preds_2.txt", 'w') as result:
         with open("pos/pos/data/ass1-tagger-dev", 'r') as f:
@@ -131,5 +145,6 @@ if __name__ == '__main__':
     map1 = count_words_tagging()
     words_and_tags = get_dict_of_all_words_and_tags()
     tag_to_vectors = make_from_words_tags_words_vector(words_and_tags, word2vec)
-    accuracy = return_the_accuracy(tag_to_vectors, word2vec, map1)
-    print(accuracy)
+    # accuracy = return_the_accuracy(tag_to_vectors, word2vec, map1)
+    # print(accuracy)
+    ex2_final(tag_to_vectors, word2vec, map1)
