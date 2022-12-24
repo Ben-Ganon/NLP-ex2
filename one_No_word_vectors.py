@@ -78,9 +78,6 @@ def predict_word_tag(map_1, map_2, word_to_check, word_map_2):
     if tag2 is not None:
         return tag2
 
-    if word_to_check[0].isupper():
-        return "NNP"
-
     return "NN"
 
 
@@ -99,11 +96,14 @@ def check_accuracy(map_1, map_2):
                 word_to_check = "/".join(word[:-1])
                 the_tag = word[-1]
 
-                # check if the word is in the map already
                 prediction = predict_word_tag(map_1, map_2, word_to_check, word_map_2)
+
                 if prediction == the_tag:
+                    print("The word= " + str(word_to_check) + " | right tag =" + the_tag + " | the prediction =" + prediction+"0")
+
                     count_true += 1
                 else:
+                    print("The word= " + str(word_to_check) + " | right tag =" + the_tag + " | the prediction =" + prediction+"0")
                     count_false += 1
                 word_map_2 = word_to_check
                 to_write += str(word_to_check) + '/' + str(prediction) + " "
