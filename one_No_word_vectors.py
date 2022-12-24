@@ -60,6 +60,10 @@ def count_words_tagging():
 
 
 def predict_word_tag(map_1, map_2, word_to_check, word_map_2):
+    if word_to_check == "." or word_to_check ==".\n":
+        return ".\n"
+    if word_to_check == ",":
+        return ","
     tag1, tag2 = None, None
     origin_word1 = map_1.get(word_to_check, None)
     if origin_word1 is not None:
@@ -99,21 +103,39 @@ def check_accuracy(map_1, map_2):
                 prediction = predict_word_tag(map_1, map_2, word_to_check, word_map_2)
 
                 if prediction == the_tag:
-                    print("The word= " + str(word_to_check) + " | right tag =" + the_tag + " | the prediction =" + prediction+"0")
-
                     count_true += 1
                 else:
-                    print("The word= " + str(word_to_check) + " | right tag =" + the_tag + " | the prediction =" + prediction+"0")
                     count_false += 1
                 word_map_2 = word_to_check
                 to_write += str(word_to_check) + '/' + str(prediction) + " "
             line = f.readline()
 
-    with open("POS_preds_1.txt", 'w') as f:
+    with open("POS_preds_1_devs.txt", 'w') as f:
         f.write(to_write)
 
     # calculate and return the accuracy
     return ((count_true) / (count_true + count_false))
+
+def create_POS_preds_1(map_1, map_2):
+    to_write = ""
+    with open("pos/pos/data/ass1-tagger-test-input", 'r') as f:
+        line = f.readline()
+        while line != '':
+            word_map_2 = None
+            # first split  by space
+            line = line.split(' ')
+            for word in line:
+                prediction = predict_word_tag(map_1, map_2, word, word_map_2)
+                word_map_2 = word
+                word = word.strip("\n")
+                prediction = prediction.strip("\n")
+                to_write += str(word) + '/' + str(prediction) + " "
+
+            to_write += "\n"
+            line = f.readline()
+
+    with open("POS_preds_1.txt", 'w') as f:
+        f.write(to_write)
 
 
 if __name__ == "__main__":
@@ -121,3 +143,5 @@ if __name__ == "__main__":
 
     accuracy = check_accuracy(map_1, map_2)
     print("The accuracy is " + str(accuracy * 100) + "%")
+
+    create_POS_preds_1(map_1,map_2)
